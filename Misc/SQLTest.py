@@ -17,12 +17,9 @@ conn = sql.connect('client.db')
 # create a cursor
 c = conn.cursor()
 
-#simple clients table
-c.execute("""CREATE TABLE clients(
-name test,
-ID INTEGER,
-wallet REAL
-)""")
+c.execute("SELECT * FROM clients")
+print(c.fetchall())
+
 
 
 
