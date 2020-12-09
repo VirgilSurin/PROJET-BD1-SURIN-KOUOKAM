@@ -1,0 +1,6 @@
+* Projet de BD1 - 2020/2021 - par Virgil Surin & Ariane Kouokam
+Ce projet consiste à créer une librairie python qui permet d'interpréter et d'exécuter des requètes *SPJRUD*.
+** Description des fonctionnalités de l'outil
+Cet outil doit pouvoir compiler une expression *SPJRUD* et vérifiant que celle-ci est bien correcte et ensuite de la traduire en requête SQL. Ces requètes seront éxécutées sur une base de données *SQLite*.
+** /Misc/test/ 
+Le répertoire //Misc/test// contients une petite base de données *SQLite* 
