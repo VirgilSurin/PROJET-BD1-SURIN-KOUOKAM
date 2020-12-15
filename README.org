@@ -4,3 +4,24 @@ Ce projet consiste à créer une librairie python qui permet d'interpréter et d'ex
 Cet outil doit pouvoir compiler une expression *SPJRUD* et vérifiant que celle-ci est bien correcte et ensuite de la traduire en requête SQL. Ces requètes seront éxécutées sur une base de données *SQLite*.
 ** /Misc/test/ 
 Le répertoire //Misc/test// contients une petite base de données *SQLite* 
+** TODO-list
+- [ ] format result
+- [ ] projection
+  - [ ] querry building
+  - [ ] arg check
+- [ ] rename
+  - [ ] querry building
+  - [ ] arg check
+- [ ] join
+  - [ ] querry building
+  - [ ] arg check
+- [ ] union
+  - [ ] querry building
+  - [ ] arg check
+- [ ] difference
+  - [ ] querry building
+  - [ ] arg check
+- [ ] select
+  - [ ] querry building
+  - [ ] arg check
+
