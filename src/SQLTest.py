@@ -12,29 +12,19 @@ E2 = Rename('Name', 'Capital', Rel('Cities'))
 
 
 """
-# connect to the db
-#db = sql.connect("client.db")
-#c = db.cursor()
-# c.execute("""CREATE TABLE clients(
-# Name TEXT,
-# Id INTEGER,
-# Wallet REAL)
-# """)
-# many_clients = [("Jef", 42, 66.66),
-#            ("Dmitri", 1917, 78524.25),
-#            ("Keanu", 808, 99999.9),
-#            ("Shrek", 2001, 123)]
-# c.executemany("INSERT INTO clients VALUES (?,?,?)", many_clients)
 
-# c.execute("SELECT * FROM clients")
-# items = c.fetchall()
-# for i in items :
-#     print(i)
+def exec_manual_querry():
+    conn = sqlite3.connect("TestTables.db")
+    c = conn.cursor()
+    querry = input("Please enter a valid querry : \n")
+    #some formatting
+    res = c.execute(querry).fetchall()
+    for row in res:
+        print("".join(el.ljust(20) for el in row))
 
-t = Table("client", "clients")
-print(t)
-
-
+emp = Table("TestTables", "emp")
+res = emp.get_schema()
+print_table(res)
 print("command executed successfully")
 # commit change
 #db.commit()

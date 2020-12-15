@@ -19,7 +19,7 @@ class Table:
         self.db = DataBase(dbName)
         self.name = tableName
         self.schema = self.get_schema()
-        
+
     def __str__(self):
         s = ""
         for item in self.schema:
@@ -58,3 +58,15 @@ class Cst:
 
     def __str__(self):
         return str(self.name)
+
+def print_table(querry_result):
+    """
+    Given the result of a SQLite querry, formats it and displays it correctly on the shell
+    
+    querry_result must be a list of tuple
+
+    Credits for this function mainly go to Matt Kleinsmith : https://stackoverflow.com/a/9989441/13287218
+    """
+    length = max(len(str(el)) for row in querry_result for el in row) + 2
+    for row in querry_result:
+        print("".join(str(el).ljust(length)+"| " for el in row))

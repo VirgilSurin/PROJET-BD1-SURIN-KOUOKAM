@@ -14,6 +14,7 @@ class MonoOperation:
         self.table = t
         self.args = args
         self.querry = ""
+        self.result = None
 
     def __str__(self):
         pass
@@ -43,14 +44,16 @@ class Select(MonoOperation):
         super().__init__(args, t)
 
         #Argument check
+        if not isinstance(t, Table):
+            raise TypeError("Invalid argument : t must be a Table, not " + str(type(t)))
         if not isinstance(arg1, Attr):
             raise TypeError("Invalid argument : arg1 must be an Attr, not " + str(type(arg1)))
         if not isinstance(arg2, Attr) and not isinstance(arg2, Cst):
-            raise TypeError("Invalid argument : arg2 must be an Attr or a Cst not " + str(type(arg2)))
+            raise TypeError("Invalid argument : arg2 must be an Attr or a Cst, not " + str(type(arg2)))
         if op not in operator:
             raise TypeError("Invalid operation : it must be =, <=, >=, <, >, !=")
 
-        # Queery building
+        # Querry building
         self.querry = "SELECT DISTINCT * FROM " + t.name + " WHERE " + str(arg1) + " " + op
         if type(arg2) == Cst:
             self.querry += " \"" + str(arg2) + "\""
@@ -61,11 +64,26 @@ class Select(MonoOperation):
         super().__init__()
 
 
-    
-t = Table("client", "clients")
-s = Select(Attr("Name"), "=", Cst("Shrek"), t)
-s2 = Select(Attr("Wallet"), "<", Cst(1000), t)
-print(s.run_querry())
-print("-------------------------")
-print(s2.run_querry())
+
+class Projection(MonoOperation):
+
+    def __init__(self, args, t):
+        super().__init__(args, t)
+
+        # Arguments check
+        if not isinstance(t, Table):
+            raise TypeError("Invalid argument : t must be a Table, not " + str(type(t)))
+        for a in self.args:
+            if not isinstance(a, Attr):
+                raise TypeError("Invalid argument : args must be a list of Attr, not " + str(type(a)))
+
+        # Querry building
+        self.querry = "SELECT DISTINCT "
+        for i in range(len(self.args)-1):
+            self.querry += str(args[i]) + ", "
+        self.querry += str(args[-1]) + " FROM " + self.table.name
+
+    def __str__(self):
+        super().__init__()
+        
 
