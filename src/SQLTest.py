@@ -20,11 +20,12 @@ def exec_manual_querry():
     #some formatting
     res = c.execute(querry).fetchall()
     for row in res:
-        print("".join(el.ljust(20) for el in row))
+        print("".join(str(el).ljust(20) for el in row))
 
 emp = Table("TestTables", "emp")
 res = emp.get_schema()
 print_table(res)
+print(get_attr(emp))
 print("command executed successfully")
 # commit change
 #db.commit()

@@ -9,19 +9,25 @@ Le répertoire //Misc/test// contients une petite base de données *SQLite*
 - [ ] projection
   - [ ] querry building
   - [ ] arg check
+  - [ ] database check
 - [ ] rename
   - [ ] querry building
   - [ ] arg check
+  - [ ] database check
 - [ ] join
   - [ ] querry building
   - [ ] arg check
+  - [ ] database check
 - [ ] union
   - [ ] querry building
   - [ ] arg check
+  - [ ] database check
 - [ ] difference
   - [ ] querry building
   - [ ] arg check
-- [ ] select
-  - [ ] querry building
-  - [ ] arg check
+  - [ ] database check
+- [-] select
+  - [X] querry building
+  - [X] arg check
+  - [ ] database check
 

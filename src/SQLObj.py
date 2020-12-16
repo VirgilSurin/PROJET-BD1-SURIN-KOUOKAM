@@ -70,3 +70,12 @@ def print_table(querry_result):
     length = max(len(str(el)) for row in querry_result for el in row) + 2
     for row in querry_result:
         print("".join(str(el).ljust(length)+"| " for el in row))
+
+def get_attr(table):
+    """
+    Given a table, will get all the attributes with their type
+
+    return = [(Attr, type), (Attr, type), ..., (Attr, type)]
+    """
+    row_attr = table.run_querry("PRAGMA table_info(%s)" % table.name)
+    return [(el[1], el[2]) for el in row_attr]

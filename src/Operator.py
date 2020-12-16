@@ -11,7 +11,7 @@ class MonoOperation:
     """
     
     def __init__(self, args, table):
-        self.table = t
+        self.table = table
         self.args = args
         self.querry = ""
         self.result = None
@@ -85,5 +85,15 @@ class Projection(MonoOperation):
 
     def __str__(self):
         super().__init__()
-        
 
+class Rename(MonoOperation):
+
+    def __init__(self, args, t):
+        super().__init__(args,t)
+
+        # Arguments check
+        #TODO
+
+        # Querry building
+        
+        
