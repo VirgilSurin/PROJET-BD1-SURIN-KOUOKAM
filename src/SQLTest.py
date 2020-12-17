@@ -22,6 +22,7 @@ def exec_manual_querry():
     for row in res:
         print("".join(str(el).ljust(20) for el in row))
 
+    
 emp = Table("TestTables", "emp")
 res = emp.get_schema()
 print_table(res)
