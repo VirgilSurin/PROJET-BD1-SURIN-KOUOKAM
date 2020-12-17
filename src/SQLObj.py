@@ -15,18 +15,19 @@ class DataBase:
         
 class Table:
 
-    def __init__(self, dbName, tableName):
+    def __init__(self, dbName, tableName, attr_list=None, row_list=None):
         self.db = DataBase(dbName)
         self.name = tableName
-
-        #alternative version of Table
-        self.attr_list = self.get_attr()
-        self.row_list = self.get_schema()
-
+        if attr_list != None and row_list != None:
+            self.attributes = self.get_attr()
+            self.rows = self.get_rows()
+        else :
+            self.attributes = attr_list
+            self.rows = row_list
+            
     def __str__(self):
         s = ""
-        for item in self.schema:
-            s += str(item) + "\n"
+        
         return s
 
     def load_table(self, attr_list, row_list):
@@ -36,13 +37,6 @@ class Table:
         """
         self.attr_list = attr_list
         self.row_list = row_list
-    
-    def get_schema(self):
-        table = self.run_querry("SELECT * FROM %s"% self.name)
-        schema = ""
-        for item in table:
-            schema += str(item) #TODO it's not yet formatting correctly
-        return table
 
     def run_querry(self, querry):
         self.db.c.execute(querry)
@@ -58,7 +52,8 @@ class Table:
         row_attr = run_querry("PRAGMA table_info(%s)" % self.name)
         return [(el[1], el[2]) for el in row_attr]
 
-    
+    def get_rows(self):
+        return self.run_querry("SELECT DISTINCT %s"% self.name)
 
     
 class Attr:
