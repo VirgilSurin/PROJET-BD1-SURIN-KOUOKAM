@@ -66,7 +66,11 @@ class Select(MonoOperation):
 
         self.result = self.run_querry()
     def __str__(self):
+<<<<<<< HEAD
         return str(self.result)
+=======
+        super().__str__()
+>>>>>>> origin/main
 
 
 
@@ -90,7 +94,7 @@ class Projection(MonoOperation):
         self.querry += str(args[-1]) + " FROM " + self.table.name
 
     def __str__(self):
-        super().__init__()
+        super().__str__()
 
 class Rename(MonoOperation):
 
@@ -118,5 +122,4 @@ class Rename(MonoOperation):
         if not flag:
             raise ArgumentError(str(arg1) + " is not a valid attribute in " + t.name)
         # Querry building
-        
         
