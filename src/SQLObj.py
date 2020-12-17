@@ -18,7 +18,10 @@ class Table:
     def __init__(self, dbName, tableName):
         self.db = DataBase(dbName)
         self.name = tableName
-        self.schema = self.get_schema()
+
+        #alternative version of Table
+        self.attr_list = self.get_attr()
+        self.row_list = self.get_schema()
 
     def __str__(self):
         s = ""
@@ -26,6 +29,14 @@ class Table:
             s += str(item) + "\n"
         return s
 
+    def load_table(self, attr_list, row_list):
+        """
+        Create an alternative table object that is load from a given set of data
+        instad of beeing loaded from a database
+        """
+        self.attr_list = attr_list
+        self.row_list = row_list
+    
     def get_schema(self):
         table = self.run_querry("SELECT * FROM %s"% self.name)
         schema = ""
@@ -38,7 +49,18 @@ class Table:
         res = self.db.c.fetchall()
         return res
 
+    def get_attr(self):
+        """
+        Will get all the attributes with their type from the table
+        
+        return = [(Attr, type), (Attr, type), ..., (Attr, type)]
+        """
+        row_attr = run_querry("PRAGMA table_info(%s)" % self.name)
+        return [(el[1], el[2]) for el in row_attr]
 
+    
+
+    
 class Attr:
     """
     Represents an attribute inside a relation/table 
@@ -71,11 +93,4 @@ def print_table(querry_result):
     for row in querry_result:
         print("".join(str(el).ljust(length)+"| " for el in row))
 
-def get_attr(table):
-    """
-    Given a table, will get all the attributes with their type
 
-    return = [(Attr, type), (Attr, type), ..., (Attr, type)]
-    """
-    row_attr = table.run_querry("PRAGMA table_info(%s)" % table.name)
-    return [(el[1], el[2]) for el in row_attr]
