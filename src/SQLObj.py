@@ -15,13 +15,12 @@ class DataBase:
         
 class Table:
 
-    def __init__(self, dbName, tableName):
-        self.db = DataBase(dbName)
-        self.name = tableName
+    def __init__(self, attr_list, row_list, db, table_name):
+        self.attr_list = attr_list
+        self.row_list = row_list
 
-        #alternative version of Table
-        self.attr_list = self.get_attr()
-        self.row_list = self.get_schema()
+        self.db = db
+        self.name = table_name
 
     def __str__(self):
         s = ""
