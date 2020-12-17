@@ -97,3 +97,39 @@ class Rename(MonoOperation):
         # Querry building
         
         
+class difference((MonoOperation):
+ def __init__(self, args, t1, t2):
+        t=(t1,t2)
+        super().__init__(args, t)
+
+        # Arguments check
+        if not isinstance(t1, Table):
+            raise TypeError("Invalid argument : t must be a Table, not " + str(type(t1)))
+        if not isinstance(t2, Table):
+            raise TypeError("Invalid argument : t must be a Table, not " + str(type(t2)))
+        for a in self.args:
+            if not isinstance(a, Attr):
+                raise TypeError("Invalid argument : args must be a list of Attr, not " + str(type(a)))
+
+        # Querry building
+        var1= get_attr(t1)
+        var2= get_attr(t2)
+        var3= get_all_from(t1)
+        var4= get_all_from(t2)
+        result=[]
+
+        if len(var1) != len(var2):
+             raise TypeError("Invalid attribute :t1 has not the same number of attributes with t2")
+        else:
+        for i in var1: 
+            if var1[i][1]!= var2[i][1]:
+                return true
+            else:
+                return false
+        for i in var3:
+            j= var5.index(var3[i])
+            result.push(var3[i])
+            return result
+
+    def __str__(self):
+        super().__init__()
