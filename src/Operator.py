@@ -1,5 +1,5 @@
 from SQLObj import *
-
+from CustomException import *
 
 # Constants
 operator = ["=", "<=", ">=", "<", ">", "!="]
@@ -44,12 +44,16 @@ class Select(MonoOperation):
         super().__init__(args, t)
 
         #Argument check
-        if not isinstance(t, Table):
-            raise TypeError("Invalid argument : t must be a Table, not " + str(type(t)))
+        if not isinstance(t, Table) and not isinstance(t, MonoOperation) \
+           and not isinstance(t, DualOperation):
+            raise TypeError("Invalid argument : t must be a Table,"\
+                            " not " + str(type(t)))
         if not isinstance(arg1, Attr):
-            raise TypeError("Invalid argument : arg1 must be an Attr, not " + str(type(arg1)))
+            raise TypeError("Invalid argument : arg1 must be an Attr,"\
+                            " not " + str(type(arg1)))
         if not isinstance(arg2, Attr) and not isinstance(arg2, Cst):
-            raise TypeError("Invalid argument : arg2 must be an Attr or a Cst, not " + str(type(arg2)))
+            raise TypeError("Invalid argument : arg2 must be an Attr or a Cst,"\
+                            " not " + str(type(arg2)))
         if op not in operator:
             raise TypeError("Invalid operation : it must be =, <=, >=, <, >, !=")
 
@@ -60,6 +64,7 @@ class Select(MonoOperation):
         else :
             self.querry += " " + str(arg2)
 
+        self.result = self.run_querry()
     def __str__(self):
         super().__init__()
 
@@ -75,7 +80,8 @@ class Projection(MonoOperation):
             raise TypeError("Invalid argument : t must be a Table, not " + str(type(t)))
         for a in self.args:
             if not isinstance(a, Attr):
-                raise TypeError("Invalid argument : args must be a list of Attr, not " + str(type(a)))
+                raise TypeError("Invalid argument : args must be a list of Attr, "\
+                                " not " + str(type(a)))
 
         # Querry building
         self.querry = "SELECT DISTINCT "
@@ -88,12 +94,29 @@ class Projection(MonoOperation):
 
 class Rename(MonoOperation):
 
-    def __init__(self, args, t):
+    def __init__(self, arg1, arg2, t):
+        args = [arg1, arg2]
         super().__init__(args,t)
 
         # Arguments check
-        #TODO
+        if not isinstance(t, Table):
+            raise TypeError("Invalid argument : t must be a Table," \
+                            " not  " + str(type(t)))
+        if not isinstance(arg1, Attr):
+            raise TypeError("Invalid argument : arg1 must be an Attr," \
+                            " not " + str(type(arg1)))
+        if not isinstance(arg2, Attr) and not isinstance(arg2, Cst):
+            raise TypeError("Invalid argument : arg2 must be an Attr or a Cst" \
+                            "not " + str(type(arg2)))
 
+        attr_list = t.get_attr()
+        flag = False
+        for attr in attr_list:
+            if attr[0] == arg1:
+                flag = True
+                break;
+        if not flag:
+            raise ArgumentError(str(arg1) + " is not a valid attribute in " + t.name)
         # Querry building
         
         
