@@ -66,7 +66,7 @@ class Select(MonoOperation):
 
         self.result = self.run_querry()
     def __str__(self):
-        super().__init__()
+        return str(self.result)
 
 
 
