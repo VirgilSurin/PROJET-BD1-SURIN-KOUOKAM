@@ -1,6 +1,5 @@
 import sqlite3
 from SQLObj import *
-from Operator import *
 
 """
 We need to translate this kind of inputs :
@@ -24,8 +23,8 @@ def exec_manual_querry():
         print("".join(str(el).ljust(20) for el in row))
 
 emp = Table("TestTables", "emp")
-print(str(Select(Attr("job"), "=", Cst("ANALYST"), emp)))
-
+res = emp.get_schema()
+print_table(res)
 
 print("command executed successfully")
 # commit change

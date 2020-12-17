@@ -66,8 +66,12 @@ class Select(MonoOperation):
 
         self.result = self.run_querry()
     def __str__(self):
+<<<<<<< HEAD
         super().__str__()
 
+=======
+        super().__init__()
+>>>>>>> parent of a8f7361... Table reworked and working + str formatting improved for Table
 
 
 
