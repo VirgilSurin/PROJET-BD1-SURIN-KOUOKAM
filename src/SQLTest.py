@@ -23,6 +23,7 @@ def exec_manual_querry():
     for row in res:
         print("".join(str(el).ljust(20) for el in row))
 
+    
 emp = Table("TestTables", "emp")
 print(str(Select(Attr("job"), "=", Cst("ANALYST"), emp)))
 
