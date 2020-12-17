@@ -25,7 +25,7 @@ def exec_manual_querry():
 emp = Table("TestTables", "emp")
 res = emp.get_schema()
 print_table(res)
-
+print(get_attr(emp))
 print("command executed successfully")
 # commit change
 #db.commit()
