@@ -43,14 +43,15 @@ class Table:
     def run_query(self, query):
         return self.db.c.execute(query).fetchall()
 
+
     def get_attr(self):
         """
         Will get all the attributes with their type from the table
         
-        return = [(Attr, type), (Attr, type), ..., (Attr, type)]
+        return = [[Attr, type], [Attr, type], ..., [Attr, type]]
         """
         row_attr = self.run_query("PRAGMA table_info(%s)" % self.name)
-        return [(el[1], el[2]) for el in row_attr]
+        return [[el[1], el[2]] for el in row_attr]
 
     def get_rows(self):
         """
@@ -85,54 +86,19 @@ class Cst:
     def __eq__(self, other):
         if isinstance(other, Cst):
             return self.name == other.name
-
-class Operation:
-    """
-    represent a valid SQLite operation
-    """
-    def __init__(self, op):
-        self.op = op
         
-    def __str__(self):
-        return op
-
-    def exec(self, first, second):
-        """
-        Given two argument, evaluate the expression with the correct operator
-        """
-        # cast to float, if integer, cast to int
-        try:
-            arg1 = float(first)
-            arg2 = float(second)
-        except:
-            raise TypeError(str(arg1) + " and " + str(arg2) + " must be int or float")
-        
-        if arg1.is_integer():
-            arg1 = int(arg1)
-        if arg2.is_integer():
-            arg2 = int(arg2)
-            
-        if self.op == "=":
-            return arg1 == arg2
-        elif self.op == ">":
-            return arg1 > arg2
-        elif self.op == ">=":
-            return arg1 >= arg2
-        elif self.op == "<":
-            return arg1 < arg2
-        elif self.op == "<=":
-            return arg1 <= arg2
-        elif self.op == "!=":
-            return arg1 != arg2
-
-        
-def print_table(query_result):
+def print_table(rows):
     """
     Given the result of a SQLite query, formats it and displays it correctly on the shell
     
     query_result must be a list of tuple
     Credits for this function mainly go to Matt Kleinsmith : https://stackoverflow.com/a/9989441/13287218
     """
-    length = max(len(str(el)) for row in query_result for el in row) + 2
-    for row in query_result:
-        print("".join(str(el).ljust(length)+"| " for el in row))
+    s = ""
+    length = max(len(str(el)) for row in rows for el in row) + 2
+    for row in rows:
+        s += "".join(str(el).ljust(length)+"| " for el in row) + "\n"
+    print(s)
+
+
+    

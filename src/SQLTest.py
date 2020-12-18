@@ -25,14 +25,13 @@ def exec_manual_querry():
     
 emp = Table("TestTables", "emp")
 dept = Table("TestTables", "dept")
-print(dept)
-# sub_quest = Projection((Attr("job"), Attr("ename"), Attr("deptno")), emp)
-# main_quest = Join(emp, dept)
-op1 = Select(Attr("job"), "=", Cst("CLERK"), emp)
-op2 = Select(Attr("job"), "=", Cst("ANALYST"), emp)
-union = Union(op1, op2)
-print_table(dept.run_query(union.query))
-#print_table(emp.run_query(main_quest.query))
+sel = Select(Attr("job"), "!=", Cst("CLERK"), emp)
+ren = Rename(Attr("ename"), Cst("NAME"), sel)
+ren2 = Rename(Attr("ename"), Cst("NAME"), emp)
+jo = Union(ren, ren2)
+print(jo.run_query())
+
+
 print("command executed successfully")
 # commit change
 #db.commit()
