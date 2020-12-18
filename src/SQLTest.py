@@ -24,16 +24,14 @@ def exec_manual_querry():
 
     
 emp = Table("TestTables", "emp")
-sub_quest = Select(Attr("job"),\
-                "=",\
-                Cst("CLERK"),\
-                emp)
-# main_quest = Select(Attr("deptno"),\
-#                     "=",\
-#                     Cst("20"),\
-#                     sub_quest.res_table)
-# print(main_quest)
-print(sub_quest)
+print(emp)
+sub_quest = Select(Attr("job"), '=', Cst("ANALYST"), emp)
+main_quest = Select(Attr("deptno"),\
+                    "=",\
+                    Cst("20"),\
+                    sub_quest)
+
+print_table(emp.run_query(sub_quest.query))
 print("command executed successfully")
 # commit change
 #db.commit()

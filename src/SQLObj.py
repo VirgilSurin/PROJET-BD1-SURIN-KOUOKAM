@@ -8,8 +8,11 @@ class DataBase:
         self.name = dbName
         
     def __str__(self):
-        return "yeet"
-        
+        return self.name
+
+    def run_query(self, query):
+        return self.c.execute(query).fetchall()
+    
     def close_connection(self):
         self.conn.close()
         
@@ -37,15 +40,8 @@ class Table:
             s += "".join(str(el).ljust(length)+"| " for el in row) + "\n"
         return s
     
-    def get_schema(self):
-        table = self.run_querry("SELECT * FROM %s"% self.name)
-        schema = ""
-        for item in table:
-            schema += str(item) #TODO it's not yet formatting correctly
-        return table
-
-    def run_querry(self, querry):
-        return self.db.c.execute(querry).fetchall()
+    def run_query(self, query):
+        return self.db.c.execute(query).fetchall()
 
     def get_attr(self):
         """
@@ -53,14 +49,14 @@ class Table:
         
         return = [(Attr, type), (Attr, type), ..., (Attr, type)]
         """
-        row_attr = self.run_querry("PRAGMA table_info(%s)" % self.name)
+        row_attr = self.run_query("PRAGMA table_info(%s)" % self.name)
         return [(el[1], el[2]) for el in row_attr]
 
     def get_rows(self):
         """
         Will fetch all the rows from a table
         """
-        return self.run_querry("SELECT DISTINCT * FROM %s" %self.name)
+        return self.run_query("SELECT DISTINCT * FROM %s" %self.name)
     
 class Attr:
     """
@@ -130,13 +126,13 @@ class Operation:
             return arg1 != arg2
 
         
-def print_table(querry_result):
+def print_table(query_result):
     """
-    Given the result of a SQLite querry, formats it and displays it correctly on the shell
+    Given the result of a SQLite query, formats it and displays it correctly on the shell
     
-    querry_result must be a list of tuple
+    query_result must be a list of tuple
     Credits for this function mainly go to Matt Kleinsmith : https://stackoverflow.com/a/9989441/13287218
     """
-    length = max(len(str(el)) for row in querry_result for el in row) + 2
-    for row in querry_result:
+    length = max(len(str(el)) for row in query_result for el in row) + 2
+    for row in query_result:
         print("".join(str(el).ljust(length)+"| " for el in row))
