@@ -22,14 +22,7 @@ def exec_manual_querry():
     for row in res:
         print("".join(str(el).ljust(20) for el in row))
 
-    
-emp = Table("TestTables", "emp")
-dept = Table("TestTables", "dept")
-sel = Select(Attr("job"), "!=", Cst("CLERK"), emp)
-ren = Rename(Attr("ename"), Cst("NAME"), sel)
-ren2 = Rename(Attr("ename"), Cst("NAME"), emp)
-jo = Union(ren, ren2)
-print(jo.run_query())
+
 
 
 print("command executed successfully")

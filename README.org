@@ -1,33 +1,78 @@
-* Projet de BD1 - 2020/2021 - par Virgil Surin & Ariane Kouokam
-Ce projet consiste à créer une librairie python qui permet d'interpréter et d'exécuter des requètes *SPJRUD*.
-** Description des fonctionnalités de l'outil
-Cet outil doit pouvoir compiler une expression *SPJRUD* et vérifiant que celle-ci est bien correcte et ensuite de la traduire en requête SQL. Ces requètes seront éxécutées sur une base de données *SQLite*.
-** /Misc/test/ 
-Le répertoire //Misc/test// contients une petite base de données *SQLite* 
-** TODO-list
-- [ ] format result
-- [ ] projection
-  - [ ] querry building
-  - [ ] arg check
-  - [ ] database check
-- [ ] rename
-  - [ ] querry building
-  - [ ] arg check
-  - [ ] database check
-- [ ] join
-  - [ ] querry building
-  - [ ] arg check
-  - [ ] database check
-- [ ] union
-  - [ ] querry building
-  - [ ] arg check
-  - [ ] database check
-- [ ] difference
-  - [ ] querry building
-  - [ ] arg check
-  - [ ] database check
-- [-] select
-  - [X] querry building
-  - [X] arg check
-  - [ ] database check
+* Introduction
+Group member : /SURIN Virgil, KOUOKAM Ariane/
+This project has for goal to create a library of object and function that allows the user to create and use SPJRUD query on a SQLite database.
+* User guide
+** Create a SPJRUD request
+In order to create your request, SQLObj *and* Operator must be imported.
+Each request will works on /relation/. A relation is either a :
+- Table object
+- Select object
+- Projection object
+- Rename object
+- Join object
+- Difference object
+- Union object
+Of course the base of your request must be built from a /Table/, otherwhise there is no data to manipulate.
+You can create a table like this :
+#+begin_src python
+youTable = Table("dataBaseName", "tableName")
+#+end_src
+/note : the table and the database must exist/
+You can now create custom query with the /Operator/ objects. This guide cover them all.
 
+It is important to note that relation object takes Attr and/or Cst object !
+*** Attr
+Represent an attributes
+#+begin_src python
+attr = Attr("attribute_name")
+#+end_src
+*** Cst
+#+begin_src python
+cst = Cst("constant_name")
+#+end_src
+
+Represent a constant
+
+*** Select
+To create a /Select/ query :
+#+begin_src python
+select = Select(attr, operator, attr_or_cst, relation)
+#+end_src
+- attr : must ba an Attr
+- operator : must be (as a string)
+  - =
+  - !=
+  - >
+  - >=
+  - <=
+  - <
+- attr_or_cst : must be an Attr or a Cst
+- relation : must be a relation object (see above)
+*** Projection
+#+begin_src python
+proj = Projection([attr1, attr2,...,attrN], relation)
+#+end_src
+- First argument must be a list of Attr
+- relation : must be a relation
+*** Rename
+#+begin_src python
+ren = Rename(attr_to_rename, new_name, relation)
+#+end_src
+- attr_to_rename : must be an Attr
+- new_name : must be a Cst
+- relation : must be a relation
+*** Union
+#+begin_src python
+un = Union(rel1, rel2)
+#+end_src
+This object takes two relation object
+*** Join
+#+begin_src python
+jo = Join(rel1, rel2)
+#+end_src
+This object takes two relation object
+*** Difference
+#+begin_src python
+diff = Difference(rel1, rel2)
+#+end_src
+This object takes two relation object

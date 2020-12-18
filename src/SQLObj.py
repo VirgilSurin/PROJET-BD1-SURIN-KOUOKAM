@@ -1,7 +1,9 @@
 import sqlite3
 
 class DataBase:
-
+    """
+    represent a database and its connection
+    """
     def __init__(self, dbName):
         self.conn = sqlite3.connect(dbName + ".db")
         self.c = self.conn.cursor()
@@ -17,7 +19,12 @@ class DataBase:
         self.conn.close()
         
 class Table:
-
+    """
+    Represent a Table. is built in two ways :
+    
+    If attr_list and row_list are not given, fetch the table from the Database.
+    Else, will use the given set of data
+    """
     def __init__(self, db, table_name,  attr_list=None, row_list=None):
         self.db = DataBase(db)
         self.name = table_name
@@ -87,18 +94,6 @@ class Cst:
         if isinstance(other, Cst):
             return self.name == other.name
         
-def print_table(rows):
-    """
-    Given the result of a SQLite query, formats it and displays it correctly on the shell
-    
-    query_result must be a list of tuple
-    Credits for this function mainly go to Matt Kleinsmith : https://stackoverflow.com/a/9989441/13287218
-    """
-    s = ""
-    length = max(len(str(el)) for row in rows for el in row) + 2
-    for row in rows:
-        s += "".join(str(el).ljust(length)+"| " for el in row) + "\n"
-    print(s)
 
 
     
