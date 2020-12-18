@@ -24,14 +24,15 @@ def exec_manual_querry():
 
     
 emp = Table("TestTables", "emp")
-print(emp)
-sub_quest = Select(Attr("job"), '=', Cst("ANALYST"), emp)
-main_quest = Select(Attr("deptno"),\
-                    "=",\
-                    Cst("20"),\
-                    sub_quest)
-
-print_table(emp.run_query(sub_quest.query))
+dept = Table("TestTables", "dept")
+print(dept)
+# sub_quest = Projection((Attr("job"), Attr("ename"), Attr("deptno")), emp)
+# main_quest = Join(emp, dept)
+op1 = Select(Attr("job"), "=", Cst("CLERK"), emp)
+op2 = Select(Attr("job"), "=", Cst("ANALYST"), emp)
+union = Union(op1, op2)
+print_table(dept.run_query(union.query))
+#print_table(emp.run_query(main_quest.query))
 print("command executed successfully")
 # commit change
 #db.commit()

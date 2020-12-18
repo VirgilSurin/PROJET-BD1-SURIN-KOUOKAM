@@ -15,10 +15,9 @@ class MonoOperation:
         self.table = table
         self.args = args
         self.query = ""
-        self.result = None
 
     def __str__(self):
-        pass
+        return self.query
 
     def run_query(self):
         return self.table.db.c.execute(self.query).fetchall()
@@ -31,14 +30,26 @@ class DualOperation:
     """
     Represent an SPJRUD operation that is run a two relation (called table here)
     """
-    def __init__(self, t1, t2):
-        self.t1 = t1
-        self.t2 = t2
+    def __init__(self, rel1, rel2):
+        #Argument check
+        if not isinstance(rel1, Table) and not isinstance(rel1, MonoOperation) and \
+           not isinstance(rel1, DualOperation):
+            raise TypeError("Invalid argument : rel1 must be a Table or an Mono/DualOperation," \
+                            " not  " + str(type(rel1)))
+        if not isinstance(rel2, Table) and not isinstance(rel2, MonoOperation) and \
+           not isinstance(rel2, DualOperation):
+            raise TypeError("Invalid argument : rel2 must be a Table or an Mono/DualOperation," \
+                            " not  " + str(type(rel2)))
 
+        self.rel1 = rel1
+        self.rel2 = rel2
+        self.query = ""
+        
     def __str__(self):
-        pass
+        return self.query
 
-
+    def run_query(self):
+        return self.table.db.c.execute(self.query).fetchall()
     
 class Select(MonoOperation):
 
@@ -81,7 +92,7 @@ class Select(MonoOperation):
         
 
     def __str__(self):
-        return self.query
+        super().__str__()
 
 
 class Projection(MonoOperation):
@@ -107,7 +118,7 @@ class Projection(MonoOperation):
         self.query += str(args[-1]) + " FROM " + get_sql(t)
 
     def __str__(self):
-        return self.query
+        super().__str__()
 
 class Rename(MonoOperation):
 
@@ -135,10 +146,46 @@ class Rename(MonoOperation):
         if not flag:
             raise ArgumentError(str(arg1) + " is not a valid attribute in " + t.name)
         # Query building
-        #TODO
+        self.query = "SELECT DISTINCT * FROM " #TODO
         
+    def __str__(self):
+        super().__str__()
 
         
+class Join(DualOperation):
+    """
+    
+    """
+    def __init__(self, rel1, rel2):
+        super().__init__(rel1, rel2)
+
+        #Query building
+        self.query = "SELECT DISTINCT * FROM " + get_sql(rel1) + " NATURAL JOIN " + get_sql(rel2)
+    
+
+class Difference(DualOperation):
+    """
+
+    """
+    def __init__(self, rel1, rel2):
+        super().__init__(rel1, rel2)
+        
+
+        self.query = "SELECT DISTINCT * FROM " + get_sql(rel1) + " EXCEPT SELECT DISTINCT * FROM " + get_sql(rel2)
+
+    def __str__(self):
+        super().__str__()
+
+class Union(DualOperation):
+    """
+    
+    """
+    def __init__(self, rel1, rel2):
+        super().__init__(rel1, rel2)
+
+        self.query = "SELECT DISTINCT * FROM " + get_sql(rel1) + " UNION SELECT DISTINCT * FROM " + get_sql(rel2)
+
+    
 def get_sql(relation):
     """
     Given a relation, will check its type.
