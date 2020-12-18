@@ -1,5 +1,6 @@
 * Introduction
 Group member : /SURIN Virgil, KOUOKAM Ariane/
+
 This project has for goal to create a library of object and function that allows the user to create and use SPJRUD query on a SQLite database.
 * User guide
 ** Create a SPJRUD request
