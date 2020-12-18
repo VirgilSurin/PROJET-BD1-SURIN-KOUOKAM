@@ -26,7 +26,4 @@ def exec_manual_querry():
 
 
 print("command executed successfully")
-# commit change
-#db.commit()
-# close the connection
-#db.close()
+

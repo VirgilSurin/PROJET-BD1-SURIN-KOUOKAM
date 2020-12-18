@@ -76,3 +76,35 @@ This object takes two relation object
 diff = Difference(rel1, rel2)
 #+end_src
 This object takes two relation object
+** Execute your request
+In order to execute your set of operation, use /.execute_querry/ on your last operation (the one containing all the others). You can print the result.
+Here is an example :
+#+begin_src python
+my_table = Table("myDb", "cool_table_name")
+sel = Select(Attr("Team"), "=", Cst("Justic_League"))
+proj = Projection([Attr("real_name"), Attr("hero_name")], sel)
+
+print(my_table) 
+print("-----My querry result-----")
+print(proj.run_querry())
+#+end_src
+* Personnal choices over implementation
+** Operation architecture
+We decided to articulate our operation around 2 main classes :
+- MonoOperation
+- DualOperation
+Those two classes or not meant to be used by the user. They are just here to make some common basic verification and initialization for operation.
+The difference between those two class are the /kind/ of operation they allow to implement.
+MonoOperation is here for SPJRUD operations that only takes one relation as argument, while DualOperation represents SPJRUD operations that are applied exclusively on 2 relation (difference, join, union)
+
+** The query system
+The /query system/ is a fancy name. But in reality, it is just a string representing the query of one SPJRUD operation that is carried over to the next operation. This system allow for imbricated operation to happend. At each level, operation will use the query given by the relation in their own query in place of the /table_name/. This leads to a massive single query string containing a sub-query for each sub-operation.
+** Attributes
+It is easy to get the attributes for a table in a SQLite databes, but it is way harder to get the attributes of the result of a SPJRUD operation as we cannot applied the operation on the actual table. To counter this, the table will fetch its attributes and from operation to operation, it will be carried out and changed to always match the reality of the SPJRUD operation
+* Notes
+** TestTables.db & SQLTest.py
+This project comes with a ready to use database (/TestTables.db/). This database is the one used by M.Buys in his SQL lesson.
+SQLTest.py conhtains a single function that allows you, when run, to enter an SQLite query (*not SPJRUD*!) if you want to mess up with the database.
+You can freely make some test with the library and mess around to gat your hands on.
+** Bugs
+There are certainly bugs but, due to time limit, I cannot fix this (or I don't know them). But any issue opened on the repo is welcomed. Maybe I will find the time to fix them in the future  but even If I don't, it may be useful for other (potential) users to know them.
