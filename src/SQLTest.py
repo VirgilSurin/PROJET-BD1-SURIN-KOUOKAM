@@ -1,6 +1,6 @@
 import sqlite3
 from SQLObj import *
-
+from Operator import *
 """
 We need to translate this kind of inputs :
 Proj([’Population’], Join(E2, E1))
@@ -24,9 +24,16 @@ def exec_manual_querry():
 
     
 emp = Table("TestTables", "emp")
-res = emp.get_schema()
-print_table(res)
-
+sub_quest = Select(Attr("job"),\
+                "=",\
+                Cst("CLERK"),\
+                emp)
+# main_quest = Select(Attr("deptno"),\
+#                     "=",\
+#                     Cst("20"),\
+#                     sub_quest.res_table)
+# print(main_quest)
+print(sub_quest)
 print("command executed successfully")
 # commit change
 #db.commit()

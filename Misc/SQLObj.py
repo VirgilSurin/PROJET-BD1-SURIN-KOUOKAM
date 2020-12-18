@@ -27,8 +27,7 @@ class Table:
 
     def __str__(self):
         s = ""
-        #it works, believe me. Credits go partially to some nice user from stack overflow
-        # https://stackoverflow.com/a/9989441/13287218
+        
         length = max(max(len(str(el)) for row in self.rows for el in row), \
                      max(len(str(attr[0])) for attr in self.attributes)) + 2
         s += "".join(str(attr[0]).ljust(length)+"| " for attr in self.attributes) + "\n"

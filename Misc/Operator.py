@@ -68,15 +68,42 @@ class Select(MonoOperation):
         if op not in operator:
             raise TypeError("Invalid operation : it must be =, <=, >=, <, >, !=")
 
-        # Querry building - NO NEEDS TO DO A REQUEST, WITH WORK LOCALLY
-        self.querry = "SELECT DISTINCT * FROM " + t.name + " WHERE " + str(arg1) + " " + op
-        if type(arg2) == Cst:
-            self.querry += " \"" + str(arg2) + "\""
+        # # Querry building - NO NEEDS TO DO A REQUEST, WITH WORK LOCALLY
+        # self.querry = "SELECT DISTINCT * FROM " + t.name + " WHERE " + str(arg1) + " " + op
+        # if type(arg2) == Cst:
+        #     self.querry += " \"" + str(arg2) + "\""
+        # else :
+        #     self.querry += " " + str(arg2)
+
+        # self.result = self.run_querry()
+        #create the table correspon
+
+        #find the index in the attributes list
+        column_index = None
+        for i in range(len(t.attributes)):
+            if arg1.name == t.attributes[i][0]:
+                column_index = i
+                break
+            
+        new_rows = []
+        if isinstance(arg2, Cst):
+            for row in t.rows:
+                if row[column_index] == arg2.name:
+                    new_rows.append(row)
         else :
-            self.querry += " " + str(arg2)
-        self.result = self.run_querry()
-
-
+            # arg2 is an Attr
+            arg2_index = None
+            for i in range(len(t.attributes)):
+                if arg2.name == t.attributes[i][0]:
+                    arg2_index = i
+                    break
+            for row in t.rows:
+                if row[column_index] == row[arg2_index]:
+                    new_rows.append()
+        #if new_rows is empty, user has made an incorrect querry
+        if len(new_rows) == 0:
+            raise ArgumentError(str(arg1) + " %s " + str(arg2) + " has returned an empty table")
+        self.res_table = Table(t.db.name, t.name, t.attributes, new_rows)
     def __str__(self):
         return str(self.res_table)
 
